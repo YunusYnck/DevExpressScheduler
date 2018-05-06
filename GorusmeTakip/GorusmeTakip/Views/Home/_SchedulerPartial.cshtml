@@ -1,0 +1,17 @@
+@using GorusmeTakip.Controllers;
+
+@{
+    var scheduler = Html.DevExpress().Scheduler(settings => {
+        settings.Name = "Scheduler";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "SchedulerPartial" };
+        settings.EditAppointmentRouteValues = new { Controller = "Home", Action = "SchedulerPartialEditAppointment" };
+
+        settings.Storage.EnableReminders = false;
+		settings.Storage.Appointments.Assign(HomeControllerSchedulerSettings.AppointmentStorage);
+        settings.Storage.Resources.Assign(HomeControllerSchedulerSettings.ResourceStorage);
+    });
+    if (ViewData["SchedulerErrorText"] != null) {
+        scheduler.SetErrorText((string)ViewData["SchedulerErrorText"]);
+    }
+}
+@scheduler.Bind(ViewData["Appointments"], ViewData["Resources"]).GetHtml()
